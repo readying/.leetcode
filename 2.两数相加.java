@@ -23,7 +23,7 @@ class Solution {
         int acc = 0;
         while(l1 != null && l2 != null){
             int temp = l1.val + l2.val + acc;
-            if(temp < 9){
+            if(temp < 10){
                 acc = 0;
             }else{
                 temp = temp - 10;
@@ -43,8 +43,9 @@ class Solution {
                     result.next = l1;
                     break;
                 }
+
                 int temp = acc + l1.val;
-                if(temp < 9){
+                if(temp < 10){
                     acc = 0;
                 }else{
                     temp = temp - 10;
@@ -64,7 +65,7 @@ class Solution {
                     break;
                 }
                 int temp = acc + l2.val;
-                if(temp < 9){
+                if(temp < 10){
                     acc = 0;
                 }else{
                     temp = temp - 10;
@@ -72,7 +73,7 @@ class Solution {
                 }
                 ListNode node1 = new ListNode(temp, null);
                 result.next = node1;
-                l1 = l2.next;
+                l2 = l2.next;
                 result = result.next;
             }
         }
