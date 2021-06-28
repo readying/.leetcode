@@ -10,6 +10,7 @@ class Solution {
 
     /**
      * 第三种 (找第(m+n+1)/2个数，或两个数)
+     * 此种方法最为简单，记住了
      * 
      * @param nums1
      * @param nums2
@@ -27,7 +28,7 @@ class Solution {
         int left = 0, right =0;
         for(int i = 0; i <= mid; i++){
             left = right;
-            if(aStart < m && (bStart > n || nums1[aStart] < nums2[bStart])){
+            if(aStart < m && (bStart >= n || nums1[aStart] < nums2[bStart])){
                 right = nums1[aStart];
                 aStart++;
             }else{
