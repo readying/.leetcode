@@ -7,43 +7,89 @@
 // @lc code=start
 class Solution {
 
-
     /**
-     * 第三种 (找第(m+n+1)/2个数，或两个数)
-     * 此种方法最为简单，记住了
-     * 
-     * @param nums1
-     * @param nums2
-     * @return
+     * 第四种 最优先记住的一种方法
+     * 是第三种的升级版， 用二分来移除没用的数据，
+     *  而且找第k大的数都可以用此方法
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-
 
         int m = nums1.length;
         int n = nums2.length;
 
         int mid = (m+n)/2;
-        int aStart = 0, bStart = 0;
 
-        int left = 0, right =0;
-        for(int i = 0; i <= mid; i++){
-            left = right;
-            if(aStart < m && (bStart >= n || nums1[aStart] < nums2[bStart])){
-                right = nums1[aStart];
-                aStart++;
-            }else{
-                right = nums2[bStart];
-                bStart++;
-            }
+        if((m+n)%2 == 0){
+            return (compare(nums1, 0, m-1, nums2, 0, n-1, (m+n)/2)  +
+                    compare(nums1, 0, m-1, nums2, 0, n-1, (m+n)/2 +1))/2.0;
+        }else {
+            return compare(nums1, 0, m-1, nums2, 0, n-1, (m+n)/2 +1);
         }
-        if((m+n)%2 ==0){
-            return (left+right)/2.0;
-        }else{
-            return (double)right;
-        }
-
-
     }
+
+    public int compare(int[] a, int aStart, int aEnd, int[] b, int bStart, int bEnd, int pos){
+
+        int alen = aEnd - aStart + 1;
+        int blen = bEnd - bStart + 1;
+
+        // 总是让短的是nums1,这样可以排除当数组1为空的情况
+        if(alen > blen){
+            return  compare(b, bStart, bEnd, a, aStart, aEnd, pos);
+        }
+        if(alen == 0){
+            return b[bStart + pos -1];
+        }
+
+        if(pos == 1) return Math.min(a[aStart], b[bStart]);
+
+        int i = aStart + Math.min(alen, pos/2) -1;
+        int j = bStart + Math.min(blen, pos/2) -1;
+
+
+        if(a[i] > b[j]){
+            return compare(a, aStart, aEnd, b, j+1, bEnd, pos- (j-bStart+1));
+        }else {
+            return  compare(a, i + 1, aEnd, b, bStart, bEnd, pos- (i-aStart+1));
+        }
+    }
+
+    /**
+     * 第三种 (找第(m+n+1)/2个数，或两个数)
+     * 此种方法最为简单，记住了
+     * 但是此方法的复杂度是O(log(m+n/2)) -> Olog(m+n), 不满足要求
+     * 
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    // public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+
+
+    //     int m = nums1.length;
+    //     int n = nums2.length;
+
+    //     int mid = (m+n)/2;
+    //     int aStart = 0, bStart = 0;
+
+    //     int left = 0, right =0;
+    //     for(int i = 0; i <= mid; i++){
+    //         left = right;
+    //         if(aStart < m && (bStart >= n || nums1[aStart] < nums2[bStart])){
+    //             right = nums1[aStart];
+    //             aStart++;
+    //         }else{
+    //             right = nums2[bStart];
+    //             bStart++;
+    //         }
+    //     }
+    //     if((m+n)%2 ==0){
+    //         return (left+right)/2.0;
+    //     }else{
+    //         return (double)right;
+    //     }
+
+
+    // }
 
 
     /**
