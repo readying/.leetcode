@@ -9,6 +9,43 @@ class Solution {
 
 
     /**
+     * 第三种 (找第(m+n+1)/2个数，或两个数)
+     * 
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+
+
+        int m = nums1.length;
+        int n = nums2.length;
+
+        int mid = (m+n)/2;
+        int aStart = 0, bStart = 0;
+
+        int left = 0, right =0;
+        for(int i = 0; i <= mid; i++){
+            left = right;
+            if(aStart < m && (bStart > n || nums1[aStart] < nums2[bStart])){
+                right = nums1[aStart];
+                aStart++;
+            }else{
+                right = nums2[bStart];
+                bStart++;
+            }
+        }
+        if((m+n)%2 ==0){
+            return (left+right)/2.0;
+        }else{
+            return (double)right;
+        }
+
+
+    }
+
+
+    /**
      * 第二种 （比较复杂可以尝试背答案。。。）
      *  考虑到是取中位数，而且是O(log(m+n)), 一般都是要二分查找的，而且合并两个有序数组确实有些浪费
      *  用i,j 分别表示两个数组的分界点，满足
@@ -19,51 +56,51 @@ class Solution {
      * @param nums2
      * @return
      */
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    // public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 
-        int m = nums1.length;
-        int n = nums2.length;
-        if(m > n){
-            return findMedianSortedArrays(nums2, nums1);
-        }
+    //     int m = nums1.length;
+    //     int n = nums2.length;
+    //     if(m > n){
+    //         return findMedianSortedArrays(nums2, nums1);
+    //     }
 
-        int left = 0;
-        int right = m;
+    //     int left = 0;
+    //     int right = m;
 
-        int total = (m + n + 1)/2;  // i+j 的总和
+    //     int total = (m + n + 1)/2;  // i+j 的总和
 
-        while(left < right){
+    //     while(left < right){
             
-            int i = left + (right - left +1)/2;  // 这是nums1的中间位置
-            int j = total - i;
+    //         int i = left + (right - left +1)/2;  // 这是nums1的中间位置
+    //         int j = total - i;
             
-            if(nums1[i-1] > nums2[j]){
-                // 说明 i 的位置太靠右了, 下次搜索范围 [left,  i-1]
-                right = i - 1;
-            }else{
-                // 说明 i 的位置太靠左了，得向右移动 [i, right]
-                left = i ;
-            }
-        }
-        int i = right;
-        int j = total - i;
-        int nums1_l1 = i == 0? Integer.MIN_VALUE : nums1[i-1];
-        int nums1_r1 = i == m? Integer.MAX_VALUE : nums1[i];
-        int nums2_l1 = j == 0? Integer.MIN_VALUE : nums2[j-1];
-        int nums2_r1 = j == n? Integer.MAX_VALUE : nums2[j];
+    //         if(nums1[i-1] > nums2[j]){
+    //             // 说明 i 的位置太靠右了, 下次搜索范围 [left,  i-1]
+    //             right = i - 1;
+    //         }else{
+    //             // 说明 i 的位置太靠左了，得向右移动 [i, right]
+    //             left = i ;
+    //         }
+    //     }
+    //     int i = right;
+    //     int j = total - i;
+    //     int nums1_l1 = i == 0? Integer.MIN_VALUE : nums1[i-1];
+    //     int nums1_r1 = i == m? Integer.MAX_VALUE : nums1[i];
+    //     int nums2_l1 = j == 0? Integer.MIN_VALUE : nums2[j-1];
+    //     int nums2_r1 = j == n? Integer.MAX_VALUE : nums2[j];
 
 
-        if((m+n)%2 == 0){
-            // 偶数 
-            int l1 = Math.max(nums1_l1, nums2_l1);
-            int l2 = Math.min(nums1_r1, nums2_r1);
-            return (l1 + l2)/2.0;
-        }else{
-            int k = Math.max(nums1_l1, nums2_l1);
-            return (double)k;
-        }
+    //     if((m+n)%2 == 0){
+    //         // 偶数 
+    //         int l1 = Math.max(nums1_l1, nums2_l1);
+    //         int l2 = Math.min(nums1_r1, nums2_r1);
+    //         return (l1 + l2)/2.0;
+    //     }else{
+    //         int k = Math.max(nums1_l1, nums2_l1);
+    //         return (double)k;
+    //     }
 
-    }
+    // }
 
 
     /**
